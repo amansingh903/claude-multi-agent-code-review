@@ -47,7 +47,7 @@
   
   <div class="summary">
     <div class="metric">
-      <div class="metric-value">15</div>
+      <div class="metric-value">19</div>
       <div class="metric-label">Overall Score</div>
     </div>
     <div class="metric">
@@ -55,15 +55,15 @@
       <div class="metric-label">Files Reviewed</div>
     </div>
     <div class="metric">
-      <div class="metric-value">5</div>
+      <div class="metric-value">3</div>
       <div class="metric-label">Critical Issues</div>
     </div>
     <div class="metric">
-      <div class="metric-value">20</div>
+      <div class="metric-value">13</div>
       <div class="metric-label">Tests Needed</div>
     </div>
     <div class="metric">
-      <div class="metric-value">10</div>
+      <div class="metric-value">9</div>
       <div class="metric-label">Refactorings</div>
     </div>
   </div>
@@ -72,37 +72,37 @@
   <ul>
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Security</strong>: URGENT: Replace raw credit card handling with payment gateway tokenization (Stripe, PayPal, Braintree). The code currently violates PCI-DSS compliance by accepting raw card numbers and CVV codes. This creates massive legal and financial liability. Use client-side tokenization and server-side token processing exclusively.
+        <strong>Security - PCI DSS Compliance</strong>: Replace DIY payment handling with PCI-compliant payment gateway (Stripe, Square). Never store raw card numbers, CVV, or expiry dates. Use tokenized payment methods only. This is a mandatory requirement before production deployment.
         <br><small>Files: src/premium.ts</small>
       </li>
     
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Security</strong>: Fix price manipulation vulnerability by removing client-supplied amount parameter. Calculate all prices server-side only and never trust client-provided payment amounts. Add authorization checks to prevent users from upgrading other accounts.
+        <strong>Security - Price Manipulation</strong>: Remove client-supplied 'amount' parameter from PaymentDetails interface. Calculate all prices server-side only to prevent attackers from paying $0.01 for premium subscriptions.
         <br><small>Files: src/premium.ts</small>
       </li>
     
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Security</strong>: Implement idempotency protection for payment processing using unique idempotency keys. This prevents double-charging users due to race conditions or network retries. Essential for production payment systems.
+        <strong>Testing - Payment Logic</strong>: Add comprehensive test suite for all payment processing functions (processPremiumPayment, validatePaymentDetails, calculateSubscriptionPrice, chargeCard). Zero test coverage on critical financial logic is unacceptable.
         <br><small>Files: src/premium.ts</small>
       </li>
     
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Testing</strong>: Add comprehensive test suite for all payment processing functions. Zero test coverage exists for critical financial logic including card validation, pricing calculations, payment charging, and subscription upgrades. This is unacceptable for production deployment.
+        <strong>Security - Sensitive Data Logging</strong>: Sanitize error logging to never log full error objects, payment details, or card data. Replace with structured logging that only includes safe metadata (userId, errorCode, timestamp).
         <br><small>Files: src/premium.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Bug Fixes</strong>: Fix expiry date validation off-by-one error that rejects cards on the last day of their expiry month. Add proper error handling for JSON.parse operations to prevent crashes from corrupted database data.
+        <strong>Bug Risk - Date Validation</strong>: Fix card expiry date comparison logic. Current implementation incorrectly rejects valid cards when checked on day-of-month that doesn't exist in expiry month (e.g., Jan 31 checking Feb expiry).
         <br><small>Files: src/premium.ts</small>
       </li>
     </ul>
 
   <footer>
-    Generated at 2026-11-18T07:03:30.714Z • Duration: 450607ms
+    Generated at 2026-11-18T10:36:52.875Z • Duration: 309829ms
   </footer>
 </body>
 </html>

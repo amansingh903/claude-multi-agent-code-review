@@ -7,24 +7,24 @@
 | **Overall Score** | 26/100 |
 | **Files Reviewed** | 1 |
 | **Critical Issues** | 0 |
-| **High Priority Tests** | 8 |
+| **High Priority Tests** | 6 |
 | **Refactoring Opportunities** | 8 |
 
 ## 🎯 Top Recommendations
 
-1. 🚨 **Security**: Replace Math.random() with cryptographically secure ID generation using crypto.randomUUID() or crypto.randomBytes(). Current implementation allows predictable user IDs that could lead to unauthorized access.
+1. 🚨 **Testing**: Add comprehensive test suite for security-critical functions. The file has 0% test coverage with no tests for XSS prevention (sanitizeInput), email validation, or user creation flow. All validation paths and edge cases are untested, leaving critical security vulnerabilities undetected.
    - Files: fixtures/clean-code.ts
 
-2. 🚨 **Testing**: Add comprehensive test suite for security-critical functions sanitizeInput() and isValidEmail(). XSS prevention and input validation are untested and could allow injection attacks.
+2. ⚠️ **Security**: Replace Math.random() ID generation with cryptographically secure crypto.randomUUID(). Current implementation enables account enumeration attacks and ID prediction, allowing unauthorized access to user accounts.
    - Files: fixtures/clean-code.ts
 
-3. ⚠️ **Security**: Strengthen email validation regex to reject malformed addresses like 'test@@domain.com' or use a battle-tested library like validator.js. Current regex allows invalid email formats.
+3. ⚠️ **Security**: Redesign XSS prevention strategy. Current HTML entity encoding is misapplied for input sanitization and incomplete (missing '&' encoding). Replace with context-aware output encoding at render time and proper input validation (length, format) at storage time.
    - Files: fixtures/clean-code.ts
 
-4. ⚠️ **Security**: Enhance XSS sanitization to cover all dangerous characters including ampersands, backticks, and forward slashes. Consider using DOMPurify for comprehensive protection.
+4. ⚠️ **Security**: Strengthen input validation to prevent empty/whitespace-only values. Add explicit .trim() checks, length validation (2-100 chars for names, max 254 for emails), and handle null/undefined inputs gracefully in isValidEmail and sanitizeInput functions.
    - Files: fixtures/clean-code.ts
 
-5. ⚠️ **Testing**: Add tests for all validation branches in createUser() including missing email/name, invalid format, and error handling. These critical paths protect data integrity.
+5. ⚠️ **Security**: Improve email validation using a robust library like 'validator' or RFC 5322-compliant regex. Current regex allows many invalid formats and doesn't prevent injection vectors or validate international characters.
    - Files: fixtures/clean-code.ts
 
 ## 📁 File Details
@@ -33,25 +33,25 @@
 
 **Quality Score:** 44/100 | **Coverage:** ~0%
 
-#### Issues (11)
-  - Line 26: `medium` Email regex validation is weak and can be bypassed with malformed addresses. The pattern /^[^\s@]+@[^\s@]+\.[^\s@]+$/ allows invalid emails like 'test@domain..com' or 'test@@domain.com' and doesn't validate TLD properly.
-  - Line 33: `medium` HTML entity encoding for XSS prevention is incomplete. This approach doesn't handle all contexts (e.g., attribute values, JavaScript contexts, URL parameters) and misses other dangerous characters like backticks and forward slashes which can be used in certain XSS vectors.
-  - Line 44: `low` Function lacks explicit return type annotation. While TypeScript infers Promise<User>, explicitly declaring it makes the API contract clearer and prevents accidental changes.
+#### Issues (10)
+  - Line 74: `high` Non-cryptographic ID generation using Math.random() and Date.now(). Attackers can predict or enumerate user IDs, leading to unauthorized access or account enumeration.
+  - Line 33: `high` XSS sanitization is incomplete and misapplied. HTML entity encoding is only appropriate for HTML contexts. The email field is not sanitized at all. If data is rendered in JavaScript, URL, or CSS contexts, this encoding is insufficient. Missing encoding for '&' character itself.
+  - Line 45: `medium` Input validation only checks truthiness, allowing empty strings and whitespace-only values. '!input.email' passes when email is an empty string.
 
-  *...and 8 more*
+  *...and 7 more*
 
-#### Test Gaps (12)
-  - `isValidEmail() in fixtures/clean-code.ts:25` (high priority)
-  - `isValidEmail() edge cases in fixtures/clean-code.ts:25` (medium priority)
+#### Test Gaps (13)
+  - `isValidEmail() at fixtures/clean-code.ts:25` (high priority)
+  - `sanitizeInput() at fixtures/clean-code.ts:33` (critical priority)
 
-  *...and 10 more*
+  *...and 11 more*
 
 #### Refactoring Opportunities (8)
-  - **extract-function**: Extract input validation logic into a separate validation function. The createUser function mixes validation, transformation, and persistence concerns. Separating validation improves testability and reusability.
-  - **pattern-improvement**: Replace chained replace calls with a lookup-based approach for better maintainability and extensibility. The current implementation is hard to extend and duplicates the replace pattern.
+  - **extract-function**: Extract input validation logic into a separate validation function to separate concerns and improve testability
+  - **pattern-improvement**: Replace chained replace calls with a lookup table pattern for better maintainability and performance
 
   *...and 6 more*
 
 ---
 
-*Generated at 2026-11-18T06:51:32.369Z • Duration: 241995ms*
+*Generated at 2026-11-18T10:25:27.236Z • Duration: 242282ms*

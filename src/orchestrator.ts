@@ -99,10 +99,9 @@ export class CodeReviewOrchestrator {
       // Task spawns subagents; Skill loads skills; the rest are read-only + MCP tools
       allowedTools: ['Task', 'Skill', 'Read', 'Grep', 'Glob', ...mcpAllowedTools],
       disallowedTools: DISALLOWED_TOOLS,
-      // Non-interactive CI/CD run: no human to approve prompts. Safe because every
-      // write/exec tool is disallowed above, so the agents stay read-only.
-      permissionMode: 'bypassPermissions',
-      allowDangerouslySkipPermissions: true,
+      // Headless CI/CD run: 'dontAsk' never prompts and denies any tool that is not
+      // pre-approved in allowedTools, so the permission model stays enforced.
+      permissionMode: 'dontAsk',
       maxTurns: this.maxTurns,
       outputFormat: {
         type: 'json_schema',

@@ -63,7 +63,7 @@
       <div class="metric-label">Tests Needed</div>
     </div>
     <div class="metric">
-      <div class="metric-value">6</div>
+      <div class="metric-value">5</div>
       <div class="metric-label">Refactorings</div>
     </div>
   </div>
@@ -72,37 +72,37 @@
   <ul>
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Security</strong>: Fix all three SQL injection vulnerabilities immediately. All new search functions (searchTodos, searchTodosByStatus, getTodosByUser) use string concatenation/interpolation instead of parameterized queries, allowing arbitrary SQL execution. This is a critical security flaw that must be fixed before merging.
+        <strong>Security</strong>: Fix SQL injection vulnerabilities in all three search functions. Replace string concatenation and template literals with parameterized queries using placeholders ($1, $2, etc.). This is a blocking issue that must be resolved before merge.
         <br><small>Files: src/todo.ts</small>
       </li>
     
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Testing</strong>: Add comprehensive tests for all three new search functions with focus on SQL injection prevention, input validation, and cross-user data isolation. Currently 0% test coverage for new code.
+        <strong>Testing</strong>: Add comprehensive test coverage for all three new search functions, including security tests with SQL injection payloads, valid use cases, edge cases (empty strings, long inputs), and authorization tests (verify user isolation in getTodosByUser).
         <br><small>Files: src/todo.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Security</strong>: Add input validation to all search functions. Validate that keyword, userId are non-null strings with reasonable length limits, and that completed is a valid boolean value. Missing validation creates bug risks and compounds security issues.
+        <strong>Type Safety</strong>: Fix type mismatch in searchTodosByStatus - change parameter from string to boolean to match the database schema and Todo interface. Add input validation to all functions to prevent invalid data from reaching the database.
         <br><small>Files: src/todo.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Type Safety</strong>: Change searchTodosByStatus parameter type from string to boolean to match the Todo interface. Current type mismatch creates API inconsistency and allows invalid values that cause SQL errors.
+        <strong>Refactoring</strong>: Extract common query execution pattern into a reusable helper function that enforces parameterized queries and provides consistent error handling. This will prevent future SQL injection vulnerabilities and reduce code duplication.
         <br><small>Files: src/todo.ts</small>
       </li>
     
-      <li class="rec-high">
-        <span class="priority">[HIGH]</span>
-        <strong>Refactoring</strong>: Extract common query execution pattern into a shared helper function to eliminate code duplication and enforce consistent parameterized query usage across all three new functions.
+      <li class="rec-medium">
+        <span class="priority">[MEDIUM]</span>
+        <strong>Performance</strong>: Replace LIKE '%keyword%' query with PostgreSQL full-text search using tsvector and GIN indexes. The current pattern with leading wildcards forces full table scans and will perform poorly on large datasets.
         <br><small>Files: src/todo.ts</small>
       </li>
     </ul>
 
   <footer>
-    Generated at 2026-11-18T06:55:23.446Z • Duration: 199768ms
+    Generated at 2026-11-18T10:29:36.304Z • Duration: 187603ms
   </footer>
 </body>
 </html>

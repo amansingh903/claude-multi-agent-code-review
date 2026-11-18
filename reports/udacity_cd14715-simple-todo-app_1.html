@@ -59,7 +59,7 @@
       <div class="metric-label">Critical Issues</div>
     </div>
     <div class="metric">
-      <div class="metric-value">8</div>
+      <div class="metric-value">6</div>
       <div class="metric-label">Tests Needed</div>
     </div>
     <div class="metric">
@@ -72,37 +72,37 @@
   <ul>
       <li class="rec-critical">
         <span class="priority">[CRITICAL]</span>
-        <strong>Security</strong>: Replace Math.random() with cryptographically secure ID generation using crypto.randomUUID() or crypto.randomBytes(). Current implementation allows predictable user IDs that could lead to unauthorized access.
-        <br><small>Files: fixtures/clean-code.ts</small>
-      </li>
-    
-      <li class="rec-critical">
-        <span class="priority">[CRITICAL]</span>
-        <strong>Testing</strong>: Add comprehensive test suite for security-critical functions sanitizeInput() and isValidEmail(). XSS prevention and input validation are untested and could allow injection attacks.
+        <strong>Testing</strong>: Add comprehensive test suite for security-critical functions. The file has 0% test coverage with no tests for XSS prevention (sanitizeInput), email validation, or user creation flow. All validation paths and edge cases are untested, leaving critical security vulnerabilities undetected.
         <br><small>Files: fixtures/clean-code.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Security</strong>: Strengthen email validation regex to reject malformed addresses like 'test@@domain.com' or use a battle-tested library like validator.js. Current regex allows invalid email formats.
+        <strong>Security</strong>: Replace Math.random() ID generation with cryptographically secure crypto.randomUUID(). Current implementation enables account enumeration attacks and ID prediction, allowing unauthorized access to user accounts.
         <br><small>Files: fixtures/clean-code.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Security</strong>: Enhance XSS sanitization to cover all dangerous characters including ampersands, backticks, and forward slashes. Consider using DOMPurify for comprehensive protection.
+        <strong>Security</strong>: Redesign XSS prevention strategy. Current HTML entity encoding is misapplied for input sanitization and incomplete (missing '&' encoding). Replace with context-aware output encoding at render time and proper input validation (length, format) at storage time.
         <br><small>Files: fixtures/clean-code.ts</small>
       </li>
     
       <li class="rec-high">
         <span class="priority">[HIGH]</span>
-        <strong>Testing</strong>: Add tests for all validation branches in createUser() including missing email/name, invalid format, and error handling. These critical paths protect data integrity.
+        <strong>Security</strong>: Strengthen input validation to prevent empty/whitespace-only values. Add explicit .trim() checks, length validation (2-100 chars for names, max 254 for emails), and handle null/undefined inputs gracefully in isValidEmail and sanitizeInput functions.
+        <br><small>Files: fixtures/clean-code.ts</small>
+      </li>
+    
+      <li class="rec-high">
+        <span class="priority">[HIGH]</span>
+        <strong>Security</strong>: Improve email validation using a robust library like 'validator' or RFC 5322-compliant regex. Current regex allows many invalid formats and doesn't prevent injection vectors or validate international characters.
         <br><small>Files: fixtures/clean-code.ts</small>
       </li>
     </ul>
 
   <footer>
-    Generated at 2026-11-18T06:51:32.369Z • Duration: 241995ms
+    Generated at 2026-11-18T10:25:27.236Z • Duration: 242282ms
   </footer>
 </body>
 </html>
