@@ -1,0 +1,163 @@
+{
+  "pullRequest": {
+    "owner": "octocat",
+    "repo": "Hello-World",
+    "number": 1
+  },
+  "fileReviews": [
+    {
+      "file": "README",
+      "codeQuality": {
+        "file": "README",
+        "issues": [
+          {
+            "line": 2,
+            "severity": "medium",
+            "category": "style",
+            "description": "Missing space after command and before description. The command 'mkdir ~/Hello-World' and its description 'Creates a directory...' are not properly separated, making it difficult to read.",
+            "suggestion": "Add proper formatting with a newline or spacing: '$ mkdir ~/Hello-World\\n  Creates a directory for your project called \"Hello-World\" in your user directory'"
+          },
+          {
+            "line": 3,
+            "severity": "medium",
+            "category": "style",
+            "description": "Missing space after command and before description. The command 'cd ~/Hello-World' and its description 'Changes the current...' lack proper separation.",
+            "suggestion": "Add proper formatting: '$ cd ~/Hello-World\\n  Changes the current working directory to your newly created directory'"
+          },
+          {
+            "line": 4,
+            "severity": "medium",
+            "category": "style",
+            "description": "Missing space after command and before description. The command 'git init' and its description 'Sets up the necessary...' lack proper separation.",
+            "suggestion": "Add proper formatting: '$ git init\\n  Sets up the necessary Git files'"
+          },
+          {
+            "line": 2,
+            "severity": "low",
+            "category": "best-practice",
+            "description": "Commands should use backticks or code blocks in Markdown for proper rendering and syntax highlighting.",
+            "suggestion": "Use Markdown code formatting: '`mkdir ~/Hello-World`' or use a code block with triple backticks for multi-line commands"
+          },
+          {
+            "line": 2,
+            "severity": "low",
+            "category": "maintainability",
+            "description": "The instructions assume a Unix/macOS environment (~/Hello-World path). Windows users will have different directory structures.",
+            "suggestion": "Add a note about cross-platform compatibility or provide alternative instructions for Windows users"
+          }
+        ],
+        "overallScore": 65,
+        "summary": "The README has several formatting and documentation quality issues. Commands and descriptions are concatenated without proper separation, making the content difficult to read. Additionally, the instructions assume a Unix/macOS environment without noting cross-platform considerations. No critical security or performance issues detected."
+      },
+      "testCoverage": {
+        "file": "README",
+        "hasTests": false,
+        "testFiles": [],
+        "untestedPaths": [],
+        "coverageEstimate": 100,
+        "summary": "README files are documentation artifacts and do not require code tests. No testable functions, classes, or branches exist in this file. The accuracy of the shell command instructions could be validated through manual testing, but this falls outside the scope of automated code coverage analysis."
+      },
+      "refactorings": {
+        "file": "README",
+        "suggestions": [
+          {
+            "type": "simplify",
+            "location": "Lines 2-5: Command instructions",
+            "impact": "high",
+            "description": "Commands and their descriptions are run together without formatting. Add line breaks and use code blocks for shell commands to improve readability and clarity.",
+            "before": "$ mkdir ~/Hello-WorldCreates a directory for your project called \"Hello-World\" in your user directory\n$ cd ~/Hello-WorldChanges the current working directory to your newly created directory\n$ git initSets up the necessary Git files",
+            "after": "```bash\n$ mkdir ~/Hello-World\n```\nCreates a directory for your project called \"Hello-World\" in your user directory.\n\n```bash\n$ cd ~/Hello-World\n```\nChanges the current working directory to your newly created directory.\n\n```bash\n$ git init\n```\nSets up the necessary Git files.",
+            "benefits": "Commands are visually distinct and easier to copy-paste. Descriptions are properly separated and easier to scan. Users can clearly distinguish what to run from what it does."
+          },
+          {
+            "type": "simplify",
+            "location": "Lines 2-6: Output formatting",
+            "impact": "medium",
+            "description": "The git init output (line 5) is mixed with commands without clear separation. Expected output should be in a separate code block with 'output' or 'bash' label.",
+            "before": "$ git initSets up the necessary Git files\nInitialized empty Git repository in /Users/your_user_directory/Hello-World/.git/\n$ touch README",
+            "after": "```bash\n$ git init\n```\nInitialized empty Git repository in /Users/your_user_directory/Hello-World/.git/\n\n```bash\n$ touch README\n```",
+            "benefits": "Output is clearly distinguished from commands and descriptions. Users understand what is expected output vs. what they should type."
+          },
+          {
+            "type": "modernize",
+            "location": "Line 1: Title formatting",
+            "impact": "low",
+            "description": "The title 'Hello World!' should use proper markdown heading syntax for better document structure and semantic meaning.",
+            "before": "Hello World!",
+            "after": "# Hello World!",
+            "benefits": "Proper document hierarchy makes the README more professional and improves navigation in markdown viewers."
+          },
+          {
+            "type": "pattern-improvement",
+            "location": "Lines 2-6: Documentation structure",
+            "impact": "medium",
+            "description": "Add proper section headers and organize instructions into a logical workflow. This creates a standard README pattern.",
+            "before": "$ mkdir ~/Hello-WorldCreates a directory...\n$ cd ~/Hello-WorldChanges the current...\n$ git initSets up...",
+            "after": "## Getting Started\n\n### 1. Create Project Directory\n```bash\n$ mkdir ~/Hello-World\n```\nCreates a directory for your project called \"Hello-World\" in your user directory.\n\n### 2. Navigate to Directory\n```bash\n$ cd ~/Hello-World\n```\nChanges the current working directory to your newly created directory.\n\n### 3. Initialize Git Repository\n```bash\n$ git init\n```\nInitialized empty Git repository in /Users/your_user_directory/Hello-World/.git/\n\n### 4. Create README\n```bash\n$ touch README\n```",
+            "benefits": "Creates a standard README structure with clear sections and numbered steps. Users can follow a logical workflow and navigate the documentation easily."
+          }
+        ],
+        "summary": "The README patch lacks proper markdown formatting for shell commands and descriptions. Commands are concatenated without separation, making them difficult to read and copy. Four significant refactoring opportunities identified: (1) add code blocks and line breaks to separate commands from descriptions, (2) distinguish command output from commands, (3) use proper markdown heading syntax, and (4) add section headers and numbered steps for better organization."
+      }
+    }
+  ],
+  "summary": {
+    "totalFiles": 1,
+    "overallScore": 79,
+    "criticalIssues": 0,
+    "highPriorityTests": 0,
+    "refactoringOpportunities": 4
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "Documentation Quality",
+      "description": "Add proper markdown formatting with code blocks for shell commands. Commands and descriptions are currently concatenated on the same line, making the README difficult to read and preventing users from easily copying commands.",
+      "files": [
+        "README"
+      ]
+    },
+    {
+      "priority": "high",
+      "category": "Documentation Structure",
+      "description": "Organize instructions into a logical workflow with section headers and numbered steps (e.g., '## Getting Started' with '### 1. Create Project Directory'). This follows standard README patterns and improves user navigation.",
+      "files": [
+        "README"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "Cross-Platform Compatibility",
+      "description": "Add notes about cross-platform compatibility. The instructions assume a Unix/macOS environment (using ~ directory expansion). Provide alternatives or clarifications for Windows users who may have different directory structures.",
+      "files": [
+        "README"
+      ]
+    },
+    {
+      "priority": "medium",
+      "category": "Markdown Best Practices",
+      "description": "Use proper markdown syntax for the title (change 'Hello World!' to '# Hello World!') to create a proper document hierarchy and improve semantic structure.",
+      "files": [
+        "README"
+      ]
+    },
+    {
+      "priority": "low",
+      "category": "Output Clarity",
+      "description": "Distinguish expected command output (like 'Initialized empty Git repository...') from commands by placing it in a separate code block or clearly labeled section.",
+      "files": [
+        "README"
+      ]
+    }
+  ],
+  "metadata": {
+    "analyzedAt": "2026-11-18T06:46:39.031Z",
+    "duration": 121952,
+    "agentVersions": {
+      "orchestrator": "claude-haiku-4-5-20251001",
+      "code-quality-analyzer": "1.0.0",
+      "test-coverage-analyzer": "1.0.0",
+      "refactoring-suggester": "1.0.0"
+    }
+  }
+}
